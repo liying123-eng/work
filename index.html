@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>工作性价比评判器</title>
+<title>性价比测试</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -17,75 +17,54 @@
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.6;padding:16px;min-height:100vh}
 .container{max-width:1100px;margin:0 auto}
 
-/* Header */
 header{text-align:center;padding:32px 0 24px}
 header h1{font-size:28px;font-weight:700;background:linear-gradient(135deg,var(--primary),#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 header p{color:var(--text2);margin-top:6px;font-size:14px}
 
-/* Toolbar */
 .toolbar{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:24px}
 .btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s}
 .btn-primary{background:var(--primary);color:#fff}
 .btn-primary:hover{background:#3b5de7;transform:translateY(-1px)}
 .btn-outline{background:var(--card);color:var(--primary);border:1.5px solid var(--primary)}
 .btn-outline:hover{background:var(--primary-light)}
-.btn-danger{background:#fee2e2;color:var(--red)}
-.btn-danger:hover{background:#fecaca}
-.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
 
-/* Tabs */
 .tabs{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:20px}
 .tab{padding:8px 18px;border-radius:8px;border:1.5px solid #ddd;background:var(--card);cursor:pointer;font-size:13px;font-weight:600;color:var(--text2);transition:all .2s;position:relative}
 .tab.active{border-color:var(--primary);background:var(--primary-light);color:var(--primary)}
 .tab .remove{position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:var(--red);color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .2s}
 .tab:hover .remove{opacity:1}
 
-/* Job Card */
 .job-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;margin-bottom:24px;display:none}
 .job-card.active{display:block}
 .job-name-row{display:flex;align-items:center;gap:12px;margin-bottom:20px}
 .job-name-input{flex:1;padding:10px 14px;border:1.5px solid #ddd;border-radius:10px;font-size:15px;font-weight:600;color:var(--text);outline:none;transition:border-color .2s}
 .job-name-input:focus{border-color:var(--primary)}
 
-/* Score Section */
 .dimension{margin-bottom:18px;padding:16px;border-radius:12px;background:#fafbfc;border:1px solid #eee;transition:background .2s}
 .dimension:hover{background:#f5f6ff}
-.dim-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
-.dim-title{font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px}
+.dim-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.dim-title{font-size:15px;font-weight:700;display:flex;align-items:center;gap:6px}
 .dim-title .icon{font-size:18px}
-.dim-weight{font-size:12px;color:var(--text3);background:#eee;padding:2px 8px;border-radius:6px}
-.dim-guide{font-size:12px;color:var(--text3);margin-bottom:8px;cursor:pointer;user-select:none}
-.dim-guide:hover{color:var(--primary)}
-.guide-detail{font-size:12px;color:var(--text2);background:#fff;border:1px solid #eee;border-radius:8px;padding:10px 12px;margin-bottom:8px;display:none;line-height:1.8}
-.guide-detail.show{display:block}
-.slider-row{display:flex;align-items:center;gap:12px}
-.slider-row input[type=range]{flex:1;-webkit-appearance:none;height:6px;border-radius:3px;background:linear-gradient(90deg,var(--red),var(--orange),var(--yellow),var(--green));outline:none;cursor:pointer}
-.slider-row input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--card);border:3px solid var(--primary);box-shadow:0 1px 4px rgba(0,0,0,.15);cursor:pointer;transition:transform .15s}
-.slider-row input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15)}
-.slider-row input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--card);border:3px solid var(--primary);box-shadow:0 1px 4px rgba(0,0,0,.15);cursor:pointer}
-.score-val{font-size:22px;font-weight:800;width:40px;text-align:center;color:var(--primary)}
 
-/* Salary Select */
-.salary-options{display:flex;gap:8px;flex-wrap:wrap}
-.salary-opt{padding:10px 16px;border-radius:10px;border:1.5px solid #ddd;background:var(--card);cursor:pointer;font-size:13px;font-weight:600;color:var(--text2);transition:all .2s;text-align:center;min-width:70px}
-.salary-opt:hover{border-color:var(--primary);background:var(--primary-light);color:var(--primary)}
-.salary-opt.active{border-color:var(--primary);background:var(--primary);color:#fff;box-shadow:0 2px 8px rgba(79,110,247,.3)}
-.salary-opt .opt-label{font-size:15px;font-weight:700;display:block}
-.salary-opt .opt-score{font-size:11px;opacity:.75;margin-top:2px;display:block}
+.opts{display:flex;gap:8px;flex-wrap:wrap}
+.opt{padding:10px 14px;border-radius:10px;border:1.5px solid #ddd;background:var(--card);cursor:pointer;font-size:13px;font-weight:600;color:var(--text2);transition:all .2s;text-align:center;flex:1;min-width:80px}
+.opt:hover{border-color:var(--primary);background:var(--primary-light);color:var(--primary)}
+.opt.active{border-color:var(--primary);background:var(--primary);color:#fff;box-shadow:0 2px 8px rgba(79,110,247,.3)}
+.opt .opt-label{font-size:13px;font-weight:700;display:block}
 
-/* Result Card */
-.result-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;margin-bottom:24px}
+.result-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px;margin-bottom:24px}
 .result-card h2{font-size:18px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
-.total-score{font-size:48px;font-weight:900;text-align:center}
-.level-badge{display:inline-block;padding:6px 16px;border-radius:20px;font-size:14px;font-weight:700;margin-top:8px}
+.total-score{font-size:52px;font-weight:900;text-align:center}
+.level-badge{display:inline-block;padding:8px 20px;border-radius:20px;font-size:15px;font-weight:700;margin-top:8px}
 .level-badge.extreme{background:#dcfce7;color:#16a34a}
 .level-badge.high{background:#dbeafe;color:#2563eb}
 .level-badge.medium{background:#fef9c3;color:#a16207}
 .level-badge.low{background:#ffedd5;color:#c2410c}
 .level-badge.vlow{background:#fee2e2;color:#dc2626}
-.score-center{text-align:center;margin-bottom:20px}
+.score-center{text-align:center;margin-bottom:16px}
+.comment-box{background:#f8f9fa;border-radius:12px;padding:16px 20px;margin-top:16px;font-size:15px;line-height:1.8;color:var(--text)}
+.comment-box .emoji{font-size:24px;display:block;margin-bottom:6px}
 
-/* Compare Table */
 .compare-section{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;margin-bottom:24px;display:none}
 .compare-section h2{font-size:18px;font-weight:700;margin-bottom:16px}
 .compare-table{width:100%;border-collapse:collapse;font-size:13px}
@@ -94,39 +73,19 @@ header p{color:var(--text2);margin-top:6px;font-size:14px}
 .compare-table .best{background:#dcfce7;font-weight:700;color:#16a34a}
 .compare-table .job-col{font-weight:700;color:var(--primary)}
 
-/* Chart */
 .chart-section{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;margin-bottom:24px}
 .chart-section h2{font-size:18px;font-weight:700;margin-bottom:16px}
 .chart-wrap{max-width:480px;margin:0 auto}
 
-/* Weight editor */
-.weight-editor{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;margin-bottom:24px;display:none}
-.weight-editor h2{font-size:18px;font-weight:700;margin-bottom:16px}
-.weight-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:13px}
-.weight-row label{width:100px;font-weight:600}
-.weight-row input[type=range]{flex:1;-webkit-appearance:none;height:5px;border-radius:3px;background:#ddd;outline:none}
-.weight-row input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--primary);cursor:pointer}
-.weight-row input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--primary);cursor:pointer}
-.weight-row .wv{width:40px;text-align:right;font-weight:700;color:var(--primary)}
-.weight-total{text-align:right;font-size:13px;margin-top:8px;font-weight:600}
-.weight-total.warn{color:var(--red)}
-
-/* Legend */
-.legend{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;margin-bottom:24px}
-.legend h2{font-size:18px;font-weight:700;margin-bottom:12px}
-.legend-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
-.legend-item{display:flex;align-items:center;gap:8px;font-size:13px;padding:8px 12px;border-radius:8px;background:#fafbfc}
-.legend-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
-
-/* Footer */
 footer{text-align:center;padding:20px 0;color:var(--text3);font-size:12px}
 
-/* Responsive */
 @media(max-width:600px){
   header h1{font-size:22px}
   .dimension{padding:12px}
-  .result-card,.chart-section,.compare-section,.legend{padding:16px}
-  .total-score{font-size:36px}
+  .opt{padding:8px 6px;font-size:12px;min-width:60px}
+  .opt .opt-label{font-size:12px}
+  .result-card,.chart-section,.compare-section{padding:16px}
+  .total-score{font-size:40px}
   .compare-table{font-size:11px}
   .compare-table th,.compare-table td{padding:6px 4px}
 }
@@ -135,100 +94,123 @@ footer{text-align:center;padding:20px 0;color:var(--text3);font-size:12px}
 <body>
 <div class="container">
   <header>
-    <h1>工作性价比评判器</h1>
-    <p>基于薪资、前景、加班、通勤、团队、福利、稳定性七大维度，量化评估你的工作性价比</p>
+    <h1>你的工作性价比测试</h1>
+    <p>7道选择题，测测你的工作到底值不值</p>
   </header>
 
-  <!-- Toolbar -->
   <div class="toolbar">
     <button class="btn btn-primary" onclick="addJob()">+ 添加工作</button>
-    <button class="btn btn-outline" id="btnWeight" onclick="toggleWeight()">调整权重</button>
     <button class="btn btn-outline" onclick="resetCurrent()">重置当前</button>
   </div>
 
-  <!-- Tabs -->
   <div class="tabs" id="tabs"></div>
-
-  <!-- Weight Editor -->
-  <div class="weight-editor" id="weightEditor"></div>
-
-  <!-- Job Cards -->
   <div id="jobCards"></div>
-
-  <!-- Result -->
   <div id="results"></div>
 
-  <!-- Radar Chart -->
   <div class="chart-section">
     <h2>维度雷达图</h2>
     <div class="chart-wrap"><canvas id="radarChart"></canvas></div>
   </div>
 
-  <!-- Compare Table -->
   <div class="compare-section" id="compareSection">
     <h2>横向对比</h2>
     <div id="compareTable"></div>
   </div>
 
-  <!-- Legend -->
-  <div class="legend">
-    <h2>性价比等级说明</h2>
-    <div class="legend-grid">
-      <div class="legend-item"><span class="legend-dot" style="background:#22c55e"></span><b>80+</b>&nbsp;极高性价比 - 强烈建议把握</div>
-      <div class="legend-item"><span class="legend-dot" style="background:#3b82f6"></span><b>65-79</b>&nbsp;较高性价比 - 值得认真考虑</div>
-      <div class="legend-item"><span class="legend-dot" style="background:#eab308"></span><b>50-64</b>&nbsp;中等性价比 - 可以接受</div>
-      <div class="legend-item"><span class="legend-dot" style="background:#f97316"></span><b>35-49</b>&nbsp;较低性价比 - 建议慎重考虑</div>
-      <div class="legend-item"><span class="legend-dot" style="background:#ef4444"></span><b>0-34</b>&nbsp;低性价比 - 建议果断放弃</div>
-    </div>
-  </div>
-
-  <footer>工作性价比评判器 | 数据参考：中国主要城市通勤监测报告、职场人满意度调研报告</footer>
+  <footer>性价比测试 | 纯属娱乐，认真你就赢了</footer>
 </div>
 
 <script>
+// 所有维度的选项定义
 const DIMS = [
   {
-    key:'salary', label:'薪资水平', icon:'💰', weight:25, isSalary:true,
-    guide:'3000以下 → 1-2分（极低）\n3000-5000 → 2-4分（偏低档）\n5000-8000 → 4-6分（基本档）\n8000-10000 → 6-7.5分（中上档）\n10000-15000 → 7.5-9分（高薪档）\n15000-20000 → 9-10分（顶薪档）\n20000以上 → 10分（封顶满分）'
+    key:'salary', label:'薪资水平', icon:'💰', weight:25,
+    options:[
+      {label:'3k以下', score:2},
+      {label:'3k-5k', score:3.5},
+      {label:'5k-8k', score:5},
+      {label:'8k-1w', score:6.5},
+      {label:'1w-1.5w', score:7.5},
+      {label:'1.5w-2w', score:9},
+      {label:'2w以上', score:10},
+    ]
   },
   {
     key:'prospect', label:'发展前景', icon:'🚀', weight:18,
-    guide:'1-2分：行业夕阳 / 岗位无上升空间 / 技能不可迁移\n3-4分：行业平稳但个人晋升通道窄\n5-6分：有一定成长空间，但天花板可见\n7-8分：行业上升期 / 明确晋升路径 / 能积累核心能力\n9-10分：风口行业 / 核心岗位 / 高速成长期'
+    options:[
+      {label:'夕阳行业/死胡同', score:2},
+      {label:'稳定但没啥上升空间', score:4},
+      {label:'有一定发展空间', score:6},
+      {label:'上升期/晋升路径清晰', score:8},
+      {label:'风口行业/核心岗位', score:10},
+    ]
   },
   {
     key:'overtime', label:'工作强度/加班', icon:'⏰', weight:15,
-    guide:'1-2分：常态996或更严重，身心俱疲\n3-4分：经常加班（日均10h+），偶有周末加班\n5-6分：偶尔加班（日均8-9h），基本能双休\n7-8分：极少加班，严格双休\n9-10分：弹性工作制 / 从不加班 / 工作节奏轻松'
+    options:[
+      {label:'007/命快没了', score:1},
+      {label:'996是常态', score:3},
+      {label:'偶尔加班/基本双休', score:6},
+      {label:'极少加班/严格双休', score:8},
+      {label:'弹性自由/不加班', score:10},
+    ]
   },
   {
     key:'commute', label:'通勤距离', icon:'🚇', weight:15,
-    guide:'1-2分：单程90分钟以上（据统计仅5%的极端通勤者）\n3-4分：单程60-90分钟\n5-6分：单程45分钟以内（全国77%的通勤者在此范围）\n7-8分：单程30分钟以内\n9-10分：步行/骑行15分钟以内或远程办公'
+    options:[
+      {label:'单程90分钟以上', score:2},
+      {label:'单程60-90分钟', score:4},
+      {label:'单程30-60分钟', score:6},
+      {label:'单程30分钟以内', score:8},
+      {label:'走路/骑车就到', score:10},
+    ]
   },
   {
     key:'team', label:'同事/团队氛围', icon:'🤝', weight:12,
-    guide:'1-2分：人际关系恶劣 / PUA严重 / 勾心斗角\n3-4分：关系冷漠 / 领导难相处 / 沟通不顺畅\n5-6分：关系一般，没有明显矛盾\n7-8分：团队融洽，合作愉快\n9-10分：如家人般温暖 / 领导优秀 / 互帮互助'
+    options:[
+      {label:'PUA天堂/宫斗剧', score:2},
+      {label:'冷漠/各干各的', score:4},
+      {label:'还行/没啥矛盾', score:6},
+      {label:'融洽/合作愉快', score:8},
+      {label:'神仙团队/领导超好', score:10},
+    ]
   },
   {
     key:'benefit', label:'福利待遇', icon:'🎁', weight:10,
-    guide:'1-2分：无五险一金 / 无任何额外福利\n3-4分：仅基础五险一金，无其他福利\n5-6分：五险一金 + 少量福利（餐补/交通补）\n7-8分：全额五险一金 + 补充医疗 + 年终奖 + 带薪假\n9-10分：顶配社保公积金 + 股票期权 + 丰厚年终 + 各类补贴'
+    options:[
+      {label:'啥福利？没听说过', score:2},
+      {label:'就基础五险一金', score:4},
+      {label:'五险一金+餐补交通补', score:6},
+      {label:'全额社保+年终+带薪假', score:8},
+      {label:'顶配福利+期权+各种补', score:10},
+    ]
   },
   {
     key:'stability', label:'工作稳定性', icon:'🛡️', weight:5,
-    guide:'1-2分：公司濒临倒闭 / 频繁裁员 / 合同不规范\n3-4分：行业波动大 / 公司经营不稳定\n5-6分：行业和公司基本稳定\n7-8分：大型企业 / 行业抗周期 / 合同规范\n9-10分：体制内 / 头部企业 / 极强抗风险能力'
+    options:[
+      {label:'随时可能倒闭', score:2},
+      {label:'行业波动大/不太稳', score:4},
+      {label:'基本稳定', score:6},
+      {label:'大厂/抗风险强', score:8},
+      {label:'铁饭碗/头部企业', score:10},
+    ]
   }
 ];
 
 const COLORS = ['#4f6ef7','#7c3aed','#ec4899','#f97316','#22c55e'];
+const weights = DIMS.map(d => d.weight);
 let jobs = [];
 let activeIdx = 0;
 let chart = null;
-let weights = DIMS.map(d => d.weight);
 
 function addJob() {
   if (jobs.length >= 5) return;
-  const id = Date.now();
-  jobs.push({ id, name: '工作 ' + (jobs.length + 1), scores: DIMS.map(() => 5), salaryTier: -1 });
-  // 薪资默认未选择，得分为0
-  jobs[jobs.length - 1].scores[0] = 0;
+  jobs.push({
+    id: Date.now(),
+    name: '工作 ' + (jobs.length + 1),
+    scores: DIMS.map(() => 0),
+    selected: DIMS.map(() => -1)
+  });
   activeIdx = jobs.length - 1;
   renderAll();
 }
@@ -240,41 +222,21 @@ function removeJob(idx) {
   renderAll();
 }
 
-function switchTab(idx) {
-  activeIdx = idx;
-  renderAll();
-}
+function switchTab(idx) { activeIdx = idx; renderAll(); }
 
 function resetCurrent() {
-  jobs[activeIdx].scores = DIMS.map(() => 5);
-  jobs[activeIdx].salaryTier = -1;
-  jobs[activeIdx].scores[0] = 0;
+  jobs[activeIdx].scores = DIMS.map(() => 0);
+  jobs[activeIdx].selected = DIMS.map(() => -1);
   renderAll();
 }
 
-// 薪资档位定义：label, 对应得分(1-10), 简短描述
-const SALARY_TIERS = [
-  { label: '3k以下',    score: 2,   desc: '月薪<3000' },
-  { label: '3k-5k',     score: 3.5, desc: '月薪3000-5000' },
-  { label: '5k-8k',     score: 5,   desc: '月薪5000-8000' },
-  { label: '8k-1w',     score: 6.5, desc: '月薪8000-10000' },
-  { label: '1w-1.5w',   score: 7.5, desc: '月薪10000-15000' },
-  { label: '1.5w-2w',   score: 9,   desc: '月薪15000-20000' },
-  { label: '2w以上',    score: 10,  desc: '月薪>20000' },
-];
-
-function selectSalary(ji, tierIdx) {
-  jobs[ji].salaryTier = tierIdx;
-  jobs[ji].scores[0] = SALARY_TIERS[tierIdx].score;
+function selectOpt(ji, di, oi) {
+  jobs[ji].selected[di] = oi;
+  jobs[ji].scores[di] = DIMS[di].options[oi].score;
   renderCards();
   renderResults();
   updateCompare();
   updateChart();
-}
-
-function toggleWeight() {
-  const el = document.getElementById('weightEditor');
-  el.style.display = el.style.display === 'none' ? 'block' : 'none';
 }
 
 function calcTotal(job) {
@@ -285,16 +247,40 @@ function calcTotal(job) {
 }
 
 function getLevel(score) {
-  if (score >= 80) return { text: '极高性价比 - 强烈建议把握', cls: 'extreme', color: '#22c55e' };
-  if (score >= 65) return { text: '较高性价比 - 值得认真考虑', cls: 'high', color: '#3b82f6' };
-  if (score >= 50) return { text: '中等性价比 - 可以接受', cls: 'medium', color: '#eab308' };
-  if (score >= 35) return { text: '较低性价比 - 建议慎重考虑', cls: 'low', color: '#f97316' };
-  return { text: '低性价比 - 建议果断放弃', cls: 'vlow', color: '#ef4444' };
+  if (score >= 80) return {
+    cls:'extreme', color:'#22c55e',
+    badge:'神仙工作',
+    comment:'这么好的工作你还想辞职？？？你是不是对生活有什么误解！别人做梦都想要的工作被你嫌弃，赶紧给我回去好好上班，敢辞职我跟你急！',
+    emoji:'🤩🤩🤩'
+  };
+  if (score >= 65) return {
+    cls:'high', color:'#3b82f6',
+    badge:'相当不错',
+    comment:'宝子这工作不错啊！虽然不是满分但在这个行情下已经是前20%了，多少人羡慕你还不自知。且上且珍惜，别身在福中不知福哦~',
+    emoji:'😎👍'
+  };
+  if (score >= 50) return {
+    cls:'medium', color:'#eab308',
+    badge:'凑合能过',
+    comment:'中规中矩，饿不死也撑不着。就像食堂的饭——能吃，但说不上好吃。可以骑驴找马，但千万别裸辞，这年头工作不好找的宝~',
+    emoji:'😐🤷'
+  };
+  if (score >= 35) return {
+    cls:'low', color:'#f97316',
+    badge:'有点亏',
+    comment:'宝子……你这工作性价比有点低了，属于用爱发电型选手。建议偷偷更新简历，没事刷刷招聘软件，机会来了赶紧跑，别等到身体亮红灯才后悔！',
+    emoji:'😰💨'
+  };
+  return {
+    cls:'vlow', color:'#ef4444',
+    badge:'快跑！',
+    comment:'宝子你吃的也太差了！！这班上的简直是花钱买罪受！外面随便找一个都比这强，赶紧润吧！什么？你说还在纠结？不要纠结了，这不是纠结的问题，这是止损的问题！！',
+    emoji:'🏃💨🔥'
+  };
 }
 
 function renderTabs() {
-  const c = document.getElementById('tabs');
-  c.innerHTML = jobs.map((j, i) => `
+  document.getElementById('tabs').innerHTML = jobs.map((j, i) => `
     <div class="tab ${i === activeIdx ? 'active' : ''}" onclick="switchTab(${i})">
       ${escHtml(j.name)}
       ${jobs.length > 1 ? `<span class="remove" onclick="event.stopPropagation();removeJob(${i})">x</span>` : ''}
@@ -303,62 +289,53 @@ function renderTabs() {
 }
 
 function renderCards() {
-  const c = document.getElementById('jobCards');
-  c.innerHTML = jobs.map((job, ji) => `
+  document.getElementById('jobCards').innerHTML = jobs.map((job, ji) => `
     <div class="job-card ${ji === activeIdx ? 'active' : ''}">
       <div class="job-name-row">
-        <input class="job-name-input" value="${escHtml(job.name)}" placeholder="输入工作名称"
+        <input class="job-name-input" value="${escHtml(job.name)}" placeholder="给这份工作起个名"
           oninput="jobs[${ji}].name=this.value;renderTabs();updateCompare();updateChart();">
       </div>
-      ${DIMS.map((d, di) => {
-        if (d.isSalary) {
-          return `
+      ${DIMS.map((d, di) => `
         <div class="dimension">
           <div class="dim-header">
             <span class="dim-title"><span class="icon">${d.icon}</span>${d.label}</span>
-            <span class="dim-weight">权重 ${weights[di]}%</span>
           </div>
-          <div style="font-size:12px;color:var(--text3);margin-bottom:10px">选择你的月薪范围（1w = 75分，2w = 满分）</div>
-          <div class="salary-options">
-            ${SALARY_TIERS.map((t, ti) => `
-              <div class="salary-opt ${job.salaryTier === ti ? 'active' : ''}" onclick="selectSalary(${ji},${ti})">
-                <span class="opt-label">${t.label}</span>
-                <span class="opt-score">${(t.score * 10).toFixed(0)}分</span>
+          <div class="opts">
+            ${d.options.map((opt, oi) => `
+              <div class="opt ${job.selected[di] === oi ? 'active' : ''}" onclick="selectOpt(${ji},${di},${oi})">
+                <span class="opt-label">${opt.label}</span>
               </div>
             `).join('')}
           </div>
-        </div>`;
-        }
-        return `
-        <div class="dimension">
-          <div class="dim-header">
-            <span class="dim-title"><span class="icon">${d.icon}</span>${d.label}</span>
-            <span class="dim-weight">权重 ${weights[di]}%</span>
-          </div>
-          <div class="dim-guide" onclick="this.nextElementSibling.classList.toggle('show')">点击查看评分参考 ▾</div>
-          <div class="guide-detail">${d.guide.replace(/\n/g, '<br>')}</div>
-          <div class="slider-row">
-            <input type="range" min="1" max="10" value="${job.scores[di]}"
-              oninput="updateScore(${ji},${di},+this.value)">
-            <span class="score-val" id="sv_${ji}_${di}">${job.scores[di]}</span>
-          </div>
-        </div>`;
-      }).join('')}
+        </div>
+      `).join('')}
     </div>
   `).join('');
 }
 
 function renderResults() {
-  const c = document.getElementById('results');
-  c.innerHTML = jobs.map((job, ji) => {
+  document.getElementById('results').innerHTML = jobs.map((job, ji) => {
+    const answered = job.selected.filter(s => s >= 0).length;
     const total = calcTotal(job);
     const lv = getLevel(total);
+    if (answered < DIMS.length) {
+      return `
+        <div class="result-card" style="border-left:4px solid #ddd;${ji !== activeIdx ? 'display:none' : ''}">
+          <div class="score-center">
+            <div style="font-size:16px;color:var(--text3);padding:20px 0">还有 ${DIMS.length - answered} 题没选，选完才能出结果哦~</div>
+          </div>
+        </div>`;
+    }
     return `
       <div class="result-card" style="border-left:4px solid ${lv.color};${ji !== activeIdx ? 'display:none' : ''}">
-        <h2>${escHtml(job.name)} 评估结果</h2>
+        <h2>${escHtml(job.name)} 的性价比报告</h2>
         <div class="score-center">
-          <div class="total-score" style="color:${lv.color}">${total.toFixed(1)}</div>
-          <span class="level-badge ${lv.cls}">${lv.text}</span>
+          <div class="total-score" style="color:${lv.color}">${total.toFixed(1)}<span style="font-size:20px;opacity:.5"> / 100</span></div>
+          <span class="level-badge ${lv.cls}">${lv.badge}</span>
+        </div>
+        <div class="comment-box">
+          <span class="emoji">${lv.emoji}</span>
+          ${lv.comment}
         </div>
         <div style="margin-top:16px;font-size:13px;color:var(--text2)">
           ${buildBreakdown(job)}
@@ -372,46 +349,14 @@ function buildBreakdown(job) {
   const totalW = weights.reduce((a, b) => a + b, 0);
   let items = DIMS.map((d, i) => ({
     label: d.icon + ' ' + d.label,
-    display: d.isSalary ? (job.salaryTier >= 0 ? SALARY_TIERS[job.salaryTier].label : '未选择') + '（' + job.scores[i].toFixed(1) + '分）' : job.scores[i] + '分',
-    contrib: (job.scores[i] * weights[i] / totalW * 10).toFixed(1),
-    weight: weights[i]
+    optLabel: job.selected[i] >= 0 ? d.options[job.selected[i]].label : '未选',
+    contrib: (job.scores[i] * weights[i] / totalW * 10).toFixed(1)
   }));
   items.sort((a, b) => b.contrib - a.contrib);
   const best = items[0];
   const worst = items[items.length - 1];
-  return `<p style="margin-bottom:6px"><b>最大优势：</b>${best.label}（${best.display}，贡献 ${best.contrib} 分）</p>
-    <p><b>最大短板：</b>${worst.label}（${worst.display}，贡献 ${worst.contrib} 分）</p>`;
-}
-
-function renderWeightEditor() {
-  const c = document.getElementById('weightEditor');
-  const total = weights.reduce((a, b) => a + b, 0);
-  c.innerHTML = `<h2>自定义权重</h2>
-    ${DIMS.map((d, i) => `
-      <div class="weight-row">
-        <label>${d.icon} ${d.label}</label>
-        <input type="range" min="0" max="50" value="${weights[i]}"
-          oninput="weights[${i}]=+this.value;renderWeightEditor();renderCards();renderResults();updateCompare();updateChart();">
-        <span class="wv">${weights[i]}%</span>
-      </div>
-    `).join('')}
-    <div class="weight-total ${total !== 100 ? 'warn' : ''}">总计：${total}%${total !== 100 ? '（建议调整为100%）' : ' ✓'}</div>
-    <div style="margin-top:10px"><button class="btn btn-outline" onclick="resetWeights()">恢复默认权重</button></div>
-  `;
-}
-
-function resetWeights() {
-  weights = DIMS.map(d => d.weight);
-  renderAll();
-}
-
-function updateScore(ji, di, val) {
-  jobs[ji].scores[di] = val;
-  const el = document.getElementById('sv_' + ji + '_' + di);
-  if (el) el.textContent = val;
-  renderResults();
-  updateCompare();
-  updateChart();
+  return `<p style="margin-bottom:6px"><b>最大优势：</b>${best.label}「${best.optLabel}」贡献了 ${best.contrib} 分</p>
+    <p><b>最大短板：</b>${worst.label}「${worst.optLabel}」只贡献了 ${worst.contrib} 分</p>`;
 }
 
 function updateChart() {
@@ -422,8 +367,7 @@ function updateChart() {
     data: job.scores,
     borderColor: COLORS[i % COLORS.length],
     backgroundColor: COLORS[i % COLORS.length] + '22',
-    borderWidth: 2,
-    pointRadius: 4,
+    borderWidth: 2, pointRadius: 4,
     pointBackgroundColor: COLORS[i % COLORS.length]
   }));
   if (chart) chart.destroy();
@@ -432,18 +376,8 @@ function updateChart() {
     data: { labels, datasets },
     options: {
       responsive: true,
-      scales: {
-        r: {
-          min: 0, max: 10,
-          ticks: { stepSize: 2, font: { size: 11 } },
-          pointLabels: { font: { size: 12, weight: '600' } },
-          grid: { color: '#e5e7eb' },
-          angleLines: { color: '#e5e7eb' }
-        }
-      },
-      plugins: {
-        legend: { position: 'bottom', labels: { font: { size: 12 } } }
-      }
+      scales: { r: { min:0, max:10, ticks:{stepSize:2,font:{size:11}}, pointLabels:{font:{size:12,weight:'600'}}, grid:{color:'#e5e7eb'}, angleLines:{color:'#e5e7eb'} } },
+      plugins: { legend: { position:'bottom', labels:{font:{size:12}} } }
     }
   });
 }
@@ -452,65 +386,44 @@ function updateCompare() {
   const sec = document.getElementById('compareSection');
   if (jobs.length < 2) { sec.style.display = 'none'; return; }
   sec.style.display = 'block';
-  const totalW = weights.reduce((a, b) => a + b, 0);
   const totals = jobs.map(j => calcTotal(j));
-
-  // Find best per dimension
   const bestDim = DIMS.map((_, di) => {
-    let maxVal = -1, maxIdx = 0;
-    jobs.forEach((j, ji) => { if (j.scores[di] > maxVal) { maxVal = j.scores[di]; maxIdx = ji; } });
-    return maxIdx;
+    let mx = -1, mi = 0;
+    jobs.forEach((j, ji) => { if (j.scores[di] > mx) { mx = j.scores[di]; mi = ji; } });
+    return mi;
   });
   const bestTotal = totals.indexOf(Math.max(...totals));
 
   let html = '<table class="compare-table"><thead><tr><th>维度</th>';
   jobs.forEach(j => { html += `<th class="job-col">${escHtml(j.name)}</th>`; });
   html += '</tr></thead><tbody>';
-
   DIMS.forEach((d, di) => {
     html += `<tr><td>${d.icon} ${d.label}</td>`;
     jobs.forEach((j, ji) => {
-      const isBest = ji === bestDim[di];
-      if (d.isSalary) {
-        html += `<td class="${isBest ? 'best' : ''}">${j.salaryTier >= 0 ? SALARY_TIERS[j.salaryTier].label : '未选'}（${j.scores[di].toFixed(1)}分）</td>`;
-      } else {
-        html += `<td class="${isBest ? 'best' : ''}">${j.scores[di]}</td>`;
-      }
+      const sel = j.selected[di];
+      const lbl = sel >= 0 ? d.options[sel].label : '未选';
+      html += `<td class="${ji === bestDim[di] ? 'best' : ''}">${lbl}</td>`;
     });
     html += '</tr>';
   });
-
   html += '<tr style="border-top:2px solid #ddd;font-size:15px"><td><b>总分</b></td>';
   jobs.forEach((j, ji) => {
-    const t = totals[ji];
-    const lv = getLevel(t);
+    const t = totals[ji]; const lv = getLevel(t);
     html += `<td class="${ji === bestTotal ? 'best' : ''}" style="color:${lv.color}"><b>${t.toFixed(1)}</b></td>`;
   });
-  html += '</tr><tr><td><b>等级</b></td>';
+  html += '</tr><tr><td><b>评价</b></td>';
   jobs.forEach(j => {
     const lv = getLevel(calcTotal(j));
-    html += `<td><span class="level-badge ${lv.cls}" style="font-size:11px;padding:3px 10px">${lv.text.split(' - ')[0]}</span></td>`;
+    html += `<td><span class="level-badge ${lv.cls}" style="font-size:11px;padding:3px 10px">${lv.badge}</span></td>`;
   });
   html += '</tr></tbody></table>';
   document.getElementById('compareTable').innerHTML = html;
 }
 
-function renderAll() {
-  renderTabs();
-  renderCards();
-  renderResults();
-  renderWeightEditor();
-  updateCompare();
-  updateChart();
-}
+function renderAll() { renderTabs(); renderCards(); renderResults(); updateCompare(); updateChart(); }
 
-function escHtml(s) {
-  const d = document.createElement('div');
-  d.textContent = s;
-  return d.innerHTML;
-}
+function escHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
 
-// Init
 addJob();
 </script>
 </body>

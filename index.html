@@ -1,430 +1,375 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>性价比测试</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#f0f2f5;--card:#fff;--primary:#4f6ef7;--primary-light:#e8ecff;
-  --text:#1a1a2e;--text2:#555;--text3:#999;
-  --green:#22c55e;--yellow:#eab308;--orange:#f97316;--red:#ef4444;
-  --shadow:0 2px 12px rgba(0,0,0,.08);
-  --radius:14px;
-}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.6;padding:16px;min-height:100vh}
-.container{max-width:1100px;margin:0 auto}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>答案之书</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+        }
 
-header{text-align:center;padding:32px 0 24px}
-header h1{font-size:28px;font-weight:700;background:linear-gradient(135deg,var(--primary),#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-header p{color:var(--text2);margin-top:6px;font-size:14px}
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
 
-.toolbar{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:24px}
-.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s}
-.btn-primary{background:var(--primary);color:#fff}
-.btn-primary:hover{background:#3b5de7;transform:translateY(-1px)}
-.btn-outline{background:var(--card);color:var(--primary);border:1.5px solid var(--primary)}
-.btn-outline:hover{background:var(--primary-light)}
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
 
-.tabs{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:20px}
-.tab{padding:8px 18px;border-radius:8px;border:1.5px solid #ddd;background:var(--card);cursor:pointer;font-size:13px;font-weight:600;color:var(--text2);transition:all .2s;position:relative}
-.tab.active{border-color:var(--primary);background:var(--primary-light);color:var(--primary)}
-.tab .remove{position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:var(--red);color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .2s}
-.tab:hover .remove{opacity:1}
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
 
-.job-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;margin-bottom:24px;display:none}
-.job-card.active{display:block}
-.job-name-row{display:flex;align-items:center;gap:12px;margin-bottom:20px}
-.job-name-input{flex:1;padding:10px 14px;border:1.5px solid #ddd;border-radius:10px;font-size:15px;font-weight:600;color:var(--text);outline:none;transition:border-color .2s}
-.job-name-input:focus{border-color:var(--primary)}
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
 
-.dimension{margin-bottom:18px;padding:16px;border-radius:12px;background:#fafbfc;border:1px solid #eee;transition:background .2s}
-.dimension:hover{background:#f5f6ff}
-.dim-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.dim-title{font-size:15px;font-weight:700;display:flex;align-items:center;gap:6px}
-.dim-title .icon{font-size:18px}
+        .title {
+            text-align: center;
+            margin-bottom: 30px;
+            z-index: 10;
+        }
 
-.opts{display:flex;gap:8px;flex-wrap:wrap}
-.opt{padding:10px 14px;border-radius:10px;border:1.5px solid #ddd;background:var(--card);cursor:pointer;font-size:13px;font-weight:600;color:var(--text2);transition:all .2s;text-align:center;flex:1;min-width:80px}
-.opt:hover{border-color:var(--primary);background:var(--primary-light);color:var(--primary)}
-.opt.active{border-color:var(--primary);background:var(--primary);color:#fff;box-shadow:0 2px 8px rgba(79,110,247,.3)}
-.opt .opt-label{font-size:13px;font-weight:700;display:block}
+        .title h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #ffd700, #ff6b6b, #c44569);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
 
-.result-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px;margin-bottom:24px}
-.result-card h2{font-size:18px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
-.total-score{font-size:52px;font-weight:900;text-align:center}
-.level-badge{display:inline-block;padding:8px 20px;border-radius:20px;font-size:15px;font-weight:700;margin-top:8px}
-.level-badge.extreme{background:#dcfce7;color:#16a34a}
-.level-badge.high{background:#dbeafe;color:#2563eb}
-.level-badge.medium{background:#fef9c3;color:#a16207}
-.level-badge.low{background:#ffedd5;color:#c2410c}
-.level-badge.vlow{background:#fee2e2;color:#dc2626}
-.score-center{text-align:center;margin-bottom:16px}
-.comment-box{background:#f8f9fa;border-radius:12px;padding:16px 20px;margin-top:16px;font-size:15px;line-height:1.8;color:var(--text)}
-.comment-box .emoji{font-size:24px;display:block;margin-bottom:6px}
+        .title p {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.95rem;
+        }
 
-.compare-section{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;margin-bottom:24px;display:none}
-.compare-section h2{font-size:18px;font-weight:700;margin-bottom:16px}
-.compare-table{width:100%;border-collapse:collapse;font-size:13px}
-.compare-table th,.compare-table td{padding:10px 8px;text-align:center;border-bottom:1px solid #eee}
-.compare-table th{background:#f8f9fa;font-weight:700;color:var(--text2);font-size:12px}
-.compare-table .best{background:#dcfce7;font-weight:700;color:#16a34a}
-.compare-table .job-col{font-weight:700;color:var(--primary)}
+        .question-area {
+            width: 100%;
+            margin-bottom: 40px;
+            z-index: 10;
+        }
 
-.chart-section{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;margin-bottom:24px}
-.chart-section h2{font-size:18px;font-weight:700;margin-bottom:16px}
-.chart-wrap{max-width:480px;margin:0 auto}
+        .question-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid rgba(255,215,0,0.3);
+            border-radius: 15px;
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            font-size: 1rem;
+            text-align: center;
+            outline: none;
+        }
 
-footer{text-align:center;padding:20px 0;color:var(--text3);font-size:12px}
+        .question-input::placeholder {
+            color: rgba(255,255,255,0.4);
+        }
 
-@media(max-width:600px){
-  header h1{font-size:22px}
-  .dimension{padding:12px}
-  .opt{padding:8px 6px;font-size:12px;min-width:60px}
-  .opt .opt-label{font-size:12px}
-  .result-card,.chart-section,.compare-section{padding:16px}
-  .total-score{font-size:40px}
-  .compare-table{font-size:11px}
-  .compare-table th,.compare-table td{padding:6px 4px}
-}
-</style>
+        .touch-area {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255,215,0,0.2), rgba(196,69,105,0.3));
+            border: 3px solid rgba(255,215,0,0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            z-index: 10;
+            touch-action: none;
+        }
+
+        .touch-area.pressing {
+            transform: scale(0.95);
+            border-color: #ffd700;
+            box-shadow: 0 0 50px rgba(255,215,0,0.4);
+        }
+
+        .energy-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid rgba(255,215,0,0.5);
+            opacity: 0;
+        }
+
+        .touch-area.pressing .energy-ring {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+
+        .center-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+        }
+
+        .touch-text {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .touch-hint {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.5);
+            margin-top: 10px;
+        }
+
+        .answer-display {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s;
+        }
+
+        .answer-display.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .answer-book {
+            width: 300px;
+            height: 400px;
+            background: linear-gradient(135deg, #2d1b4e 0%, #1a1a2e 100%);
+            border-radius: 10px;
+            border: 3px solid #ffd700;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(255,215,0,0.3);
+        }
+
+        .answer-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .answer-text {
+            font-size: 1.5rem;
+            color: #ffd700;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .answer-meaning {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.8;
+        }
+
+        .close-btn {
+            margin-top: 30px;
+            padding: 12px 40px;
+            background: linear-gradient(45deg, #ffd700, #ff6b6b);
+            color: #1a1a2e;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .hint {
+            margin-top: 40px;
+            text-align: center;
+            color: rgba(255,255,255,0.5);
+            font-size: 0.85rem;
+            z-index: 10;
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-  <header>
-    <h1>你的工作性价比测试</h1>
-    <p>7道选择题，测测你的工作到底值不值</p>
-  </header>
+    <div class="stars" id="stars"></div>
 
-  <div class="toolbar">
-    <button class="btn btn-primary" onclick="addJob()">+ 添加工作</button>
-    <button class="btn btn-outline" onclick="resetCurrent()">重置当前</button>
-  </div>
+    <div class="container">
+        <div class="title">
+            <h1>📖 答案之书</h1>
+            <p>心中默念你的问题，长按获取答案</p>
+        </div>
 
-  <div class="tabs" id="tabs"></div>
-  <div id="jobCards"></div>
-  <div id="results"></div>
+        <div class="question-area">
+            <input type="text" class="question-input" id="question" placeholder="在这里输入你的问题（可选）...">
+        </div>
 
-  <div class="chart-section">
-    <h2>维度雷达图</h2>
-    <div class="chart-wrap"><canvas id="radarChart"></canvas></div>
-  </div>
+        <div class="touch-area" id="touchArea">
+            <div class="energy-ring"></div>
+            <div class="center-icon">🔮</div>
+            <div class="touch-text">长按获取答案</div>
+            <div class="touch-hint">按住 3 秒</div>
+        </div>
 
-  <div class="compare-section" id="compareSection">
-    <h2>横向对比</h2>
-    <div id="compareTable"></div>
-  </div>
-
-  <footer>性价比测试 | 纯属娱乐，认真你就赢了</footer>
-</div>
-
-<script>
-// 所有维度的选项定义
-const DIMS = [
-  {
-    key:'salary', label:'薪资水平', icon:'💰', weight:25,
-    options:[
-      {label:'3k以下', score:2},
-      {label:'3k-5k', score:3.5},
-      {label:'5k-8k', score:5},
-      {label:'8k-1w', score:6.5},
-      {label:'1w-1.5w', score:7.5},
-      {label:'1.5w-2w', score:9},
-      {label:'2w以上', score:10},
-    ]
-  },
-  {
-    key:'prospect', label:'发展前景', icon:'🚀', weight:18,
-    options:[
-      {label:'夕阳行业/死胡同', score:2},
-      {label:'稳定但没啥上升空间', score:4},
-      {label:'有一定发展空间', score:6},
-      {label:'上升期/晋升路径清晰', score:8},
-      {label:'风口行业/核心岗位', score:10},
-    ]
-  },
-  {
-    key:'overtime', label:'工作强度/加班', icon:'⏰', weight:15,
-    options:[
-      {label:'007/命快没了', score:1},
-      {label:'996是常态', score:3},
-      {label:'偶尔加班/基本双休', score:6},
-      {label:'极少加班/严格双休', score:8},
-      {label:'弹性自由/不加班', score:10},
-    ]
-  },
-  {
-    key:'commute', label:'通勤距离', icon:'🚇', weight:15,
-    options:[
-      {label:'单程90分钟以上', score:2},
-      {label:'单程60-90分钟', score:4},
-      {label:'单程30-60分钟', score:6},
-      {label:'单程30分钟以内', score:8},
-      {label:'走路/骑车就到', score:10},
-    ]
-  },
-  {
-    key:'team', label:'同事/团队氛围', icon:'🤝', weight:12,
-    options:[
-      {label:'PUA天堂/宫斗剧', score:2},
-      {label:'冷漠/各干各的', score:4},
-      {label:'还行/没啥矛盾', score:6},
-      {label:'融洽/合作愉快', score:8},
-      {label:'神仙团队/领导超好', score:10},
-    ]
-  },
-  {
-    key:'benefit', label:'福利待遇', icon:'🎁', weight:10,
-    options:[
-      {label:'啥福利？没听说过', score:2},
-      {label:'就基础五险一金', score:4},
-      {label:'五险一金+餐补交通补', score:6},
-      {label:'全额社保+年终+带薪假', score:8},
-      {label:'顶配福利+期权+各种补', score:10},
-    ]
-  },
-  {
-    key:'stability', label:'工作稳定性', icon:'🛡️', weight:5,
-    options:[
-      {label:'随时可能倒闭', score:2},
-      {label:'行业波动大/不太稳', score:4},
-      {label:'基本稳定', score:6},
-      {label:'大厂/抗风险强', score:8},
-      {label:'铁饭碗/头部企业', score:10},
-    ]
-  }
-];
-
-const COLORS = ['#4f6ef7','#7c3aed','#ec4899','#f97316','#22c55e'];
-const weights = DIMS.map(d => d.weight);
-let jobs = [];
-let activeIdx = 0;
-let chart = null;
-
-function addJob() {
-  if (jobs.length >= 5) return;
-  jobs.push({
-    id: Date.now(),
-    name: '工作 ' + (jobs.length + 1),
-    scores: DIMS.map(() => 0),
-    selected: DIMS.map(() => -1)
-  });
-  activeIdx = jobs.length - 1;
-  renderAll();
-}
-
-function removeJob(idx) {
-  if (jobs.length <= 1) return;
-  jobs.splice(idx, 1);
-  if (activeIdx >= jobs.length) activeIdx = jobs.length - 1;
-  renderAll();
-}
-
-function switchTab(idx) { activeIdx = idx; renderAll(); }
-
-function resetCurrent() {
-  jobs[activeIdx].scores = DIMS.map(() => 0);
-  jobs[activeIdx].selected = DIMS.map(() => -1);
-  renderAll();
-}
-
-function selectOpt(ji, di, oi) {
-  jobs[ji].selected[di] = oi;
-  jobs[ji].scores[di] = DIMS[di].options[oi].score;
-  renderCards();
-  renderResults();
-  updateCompare();
-  updateChart();
-}
-
-function calcTotal(job) {
-  const totalW = weights.reduce((a, b) => a + b, 0);
-  let score = 0;
-  job.scores.forEach((s, i) => { score += s * (weights[i] / totalW); });
-  return score * 10;
-}
-
-function getLevel(score) {
-  if (score >= 80) return {
-    cls:'extreme', color:'#22c55e',
-    badge:'神仙工作',
-    comment:'这么好的工作你还想辞职？？？你是不是对生活有什么误解！别人做梦都想要的工作被你嫌弃，赶紧给我回去好好上班，敢辞职我跟你急！',
-    emoji:'🤩🤩🤩'
-  };
-  if (score >= 65) return {
-    cls:'high', color:'#3b82f6',
-    badge:'相当不错',
-    comment:'宝子这工作不错啊！虽然不是满分但在这个行情下已经是前20%了，多少人羡慕你还不自知。且上且珍惜，别身在福中不知福哦~',
-    emoji:'😎👍'
-  };
-  if (score >= 50) return {
-    cls:'medium', color:'#eab308',
-    badge:'凑合能过',
-    comment:'中规中矩，饿不死也撑不着。就像食堂的饭——能吃，但说不上好吃。可以骑驴找马，但千万别裸辞，这年头工作不好找的宝~',
-    emoji:'😐🤷'
-  };
-  if (score >= 35) return {
-    cls:'low', color:'#f97316',
-    badge:'有点亏',
-    comment:'宝子……你这工作性价比有点低了，属于用爱发电型选手。建议偷偷更新简历，没事刷刷招聘软件，机会来了赶紧跑，别等到身体亮红灯才后悔！',
-    emoji:'😰💨'
-  };
-  return {
-    cls:'vlow', color:'#ef4444',
-    badge:'快跑！',
-    comment:'宝子你吃的也太差了！！这班上的简直是花钱买罪受！外面随便找一个都比这强，赶紧润吧！什么？你说还在纠结？不要纠结了，这不是纠结的问题，这是止损的问题！！',
-    emoji:'🏃💨🔥'
-  };
-}
-
-function renderTabs() {
-  document.getElementById('tabs').innerHTML = jobs.map((j, i) => `
-    <div class="tab ${i === activeIdx ? 'active' : ''}" onclick="switchTab(${i})">
-      ${escHtml(j.name)}
-      ${jobs.length > 1 ? `<span class="remove" onclick="event.stopPropagation();removeJob(${i})">x</span>` : ''}
+        <div class="hint">💫 肯定50% · 模棱两可30% · 负面20%</div>
     </div>
-  `).join('');
-}
 
-function renderCards() {
-  document.getElementById('jobCards').innerHTML = jobs.map((job, ji) => `
-    <div class="job-card ${ji === activeIdx ? 'active' : ''}">
-      <div class="job-name-row">
-        <input class="job-name-input" value="${escHtml(job.name)}" placeholder="给这份工作起个名"
-          oninput="jobs[${ji}].name=this.value;renderTabs();updateCompare();updateChart();">
-      </div>
-      ${DIMS.map((d, di) => `
-        <div class="dimension">
-          <div class="dim-header">
-            <span class="dim-title"><span class="icon">${d.icon}</span>${d.label}</span>
-          </div>
-          <div class="opts">
-            ${d.options.map((opt, oi) => `
-              <div class="opt ${job.selected[di] === oi ? 'active' : ''}" onclick="selectOpt(${ji},${di},${oi})">
-                <span class="opt-label">${opt.label}</span>
-              </div>
-            `).join('')}
-          </div>
+    <div class="answer-display" id="answerDisplay">
+        <div class="answer-book">
+            <div class="answer-icon" id="answerIcon">✨</div>
+            <div class="answer-text" id="answerText"></div>
+            <div class="answer-meaning" id="answerMeaning"></div>
         </div>
-      `).join('')}
+        <button class="close-btn" onclick="closeAnswer()">再问一次</button>
     </div>
-  `).join('');
-}
 
-function renderResults() {
-  document.getElementById('results').innerHTML = jobs.map((job, ji) => {
-    const answered = job.selected.filter(s => s >= 0).length;
-    const total = calcTotal(job);
-    const lv = getLevel(total);
-    if (answered < DIMS.length) {
-      return `
-        <div class="result-card" style="border-left:4px solid #ddd;${ji !== activeIdx ? 'display:none' : ''}">
-          <div class="score-center">
-            <div style="font-size:16px;color:var(--text3);padding:20px 0">还有 ${DIMS.length - answered} 题没选，选完才能出结果哦~</div>
-          </div>
-        </div>`;
-    }
-    return `
-      <div class="result-card" style="border-left:4px solid ${lv.color};${ji !== activeIdx ? 'display:none' : ''}">
-        <h2>${escHtml(job.name)} 的性价比报告</h2>
-        <div class="score-center">
-          <div class="total-score" style="color:${lv.color}">${total.toFixed(1)}<span style="font-size:20px;opacity:.5"> / 100</span></div>
-          <span class="level-badge ${lv.cls}">${lv.badge}</span>
-        </div>
-        <div class="comment-box">
-          <span class="emoji">${lv.emoji}</span>
-          ${lv.comment}
-        </div>
-        <div style="margin-top:16px;font-size:13px;color:var(--text2)">
-          ${buildBreakdown(job)}
-        </div>
-      </div>
-    `;
-  }).join('');
-}
+    <script>
+        // 答案库：肯定50% + 模棱两可30% + 负面20%
+        const answers = [
+            // ===== 肯定/积极 50%（20个）=====
+            { text: '是的', icon: '☀️', meaning: '时机已经成熟，勇敢去做吧。宇宙在支持你。', type: 'positive' },
+            { text: '大胆去做', icon: '🚀', meaning: '冒险是成长的必经之路。勇敢迈出那一步。', type: 'positive' },
+            { text: '机会难得', icon: '💎', meaning: '机不可失，时不再来。抓住眼前的机会。', type: 'positive' },
+            { text: '全力以赴', icon: '🔥', meaning: '投入你所有的热情，结果不会辜负你。', type: 'positive' },
+            { text: '相信自己', icon: '💪', meaning: '你比想象中更强大。答案就在你心中。', type: 'positive' },
+            { text: '马上行动', icon: '⏩', meaning: '拖延是失败的开始，现在就去做。', type: 'positive' },
+            { text: '会有惊喜', icon: '🎁', meaning: '意想不到的好事即将发生，保持期待。', type: 'positive' },
+            { text: '会有贵人', icon: '👼', meaning: '冥冥之中自有安排，会有人伸出援手。', type: 'positive' },
+            { text: '值得投资', icon: '💰', meaning: '时间、金钱或感情，这份投入会有回报。', type: 'positive' },
+            { text: '一帆风顺', icon: '⛵', meaning: '天时地利人和，这次会格外顺利。', type: 'positive' },
+            { text: '会有回报', icon: '🌾', meaning: '一分耕耘一分收获，你的努力不会白费。', type: 'positive' },
+            { text: '尝试新事物', icon: '🌈', meaning: '走出舒适区，你会发现新的可能。', type: 'positive' },
+            { text: '展示自己', icon: '🦚', meaning: '是金子就要发光，让世界看到你的才华。', type: 'positive' },
+            { text: '坚持己见', icon: '🗿', meaning: '你的判断是正确的，不要被他人左右。', type: 'positive' },
+            { text: '重新开始', icon: '🌅', meaning: '结束也是开始，放下过去，迎接新生。', type: 'positive' },
+            { text: '就是现在', icon: '⚡', meaning: '最好的时机就是当下，不要等待完美时刻。', type: 'positive' },
+            { text: '放手一搏', icon: '🎲', meaning: '人生能有几回搏，不试试怎么知道不行。', type: 'positive' },
+            { text: '勇往直前', icon: '🦁', meaning: '勇气不是没有恐惧，而是带着恐惧依然前行。', type: 'positive' },
+            { text: '梦想成真', icon: '✨', meaning: '你的愿望正在显化，保持信念。', type: 'positive' },
+            { text: '趁热打铁', icon: '🔨', meaning: ' momentum 正好，一鼓作气完成它。', type: 'positive' },
+            
+            // ===== 模棱两可/哲理 30%（12个）=====
+            { text: '一切都是最好的安排', icon: '☯️', meaning: '当下的困惑，或许是未来的礼物。看似的失去，可能是另一种得到。', type: 'philosophy' },
+            { text: '塞翁失马，焉知非福', icon: '🐴', meaning: '眼前的得失不必太过执着，福祸相依，转机往往藏在意外之中。', type: 'philosophy' },
+            { text: '顺其自然', icon: '🌊', meaning: '强求不得，随遇而安。最好的安排正在发生。', type: 'philosophy' },
+            { text: '船到桥头自然直', icon: '🚢', meaning: '过度担忧未来只会消耗当下。水到绝境是风景，人到绝境是重生。', type: 'philosophy' },
+            { text: '跟随内心', icon: '❤️', meaning: '理智分析再多，不如听从内心的声音。', type: 'philosophy' },
+            { text: '专注当下', icon: '🎯', meaning: '过去已逝，未来未至，活在当下最重要。', type: 'philosophy' },
+            { text: '难得糊涂', icon: '😌', meaning: '太清醒的人活得太累。有时候，装傻是一种智慧。', type: 'philosophy' },
+            { text: '知足常乐', icon: '😊', meaning: '欲望是无底洞，知足才能常乐。珍惜拥有的，放下执念的。', type: 'philosophy' },
+            { text: '否极泰来', icon: '🌅', meaning: '坏到极致就会变好，黑暗之后必是黎明。坚持住，转机快到了。', type: 'philosophy' },
+            { text: '韬光养晦', icon: '💎', meaning: '光芒太盛易折，才华太露易妒。藏锋守拙，等待时机。', type: 'philosophy' },
+            { text: '知行合一', icon: '🎯', meaning: '知道和做到之间，隔着千山万水。想都是问题，做才有答案。', type: 'philosophy' },
+            { text: '上善若水', icon: '💧', meaning: '水善利万物而不争。柔软胜刚强，包容得人心。', type: 'philosophy' },
+            
+            // ===== 负面/谨慎 20%（8个）=====
+            { text: '还不是时候', icon: '⏰', meaning: '准备还不够充分，再给自己一些时间。', type: 'negative' },
+            { text: '再等等', icon: '🌙', meaning: '耐心是一种智慧。现在不是最好的时机，静候佳音。', type: 'negative' },
+            { text: '需要谨慎', icon: '⚠️', meaning: '小心驶得万年船，多观察，少行动。', type: 'negative' },
+            { text: '暂时放下', icon: '🍃', meaning: '有些东西需要放下，才能迎接更好的。顺其自然。', type: 'negative' },
+            { text: '保持现状', icon: '🛡️', meaning: '现在很好，不需要改变。稳定也是一种幸福。', type: 'negative' },
+            { text: '及时止损', icon: '✂️', meaning: '沉没成本不是成本，及时退出是明智的。', type: 'negative' },
+            { text: '改变方向', icon: '🧭', meaning: '此路不通，换个角度思考，会有新的发现。', type: 'negative' },
+            { text: '不要强求', icon: '🕊️', meaning: '属于你的终会到来，不属于你的强求不得。', type: 'negative' }
+        ];
 
-function buildBreakdown(job) {
-  const totalW = weights.reduce((a, b) => a + b, 0);
-  let items = DIMS.map((d, i) => ({
-    label: d.icon + ' ' + d.label,
-    optLabel: job.selected[i] >= 0 ? d.options[job.selected[i]].label : '未选',
-    contrib: (job.scores[i] * weights[i] / totalW * 10).toFixed(1)
-  }));
-  items.sort((a, b) => b.contrib - a.contrib);
-  const best = items[0];
-  const worst = items[items.length - 1];
-  return `<p style="margin-bottom:6px"><b>最大优势：</b>${best.label}「${best.optLabel}」贡献了 ${best.contrib} 分</p>
-    <p><b>最大短板：</b>${worst.label}「${worst.optLabel}」只贡献了 ${worst.contrib} 分</p>`;
-}
+        // 生成星空
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+        createStars();
 
-function updateChart() {
-  const ctx = document.getElementById('radarChart');
-  const labels = DIMS.map(d => d.label);
-  const datasets = jobs.map((job, i) => ({
-    label: job.name,
-    data: job.scores,
-    borderColor: COLORS[i % COLORS.length],
-    backgroundColor: COLORS[i % COLORS.length] + '22',
-    borderWidth: 2, pointRadius: 4,
-    pointBackgroundColor: COLORS[i % COLORS.length]
-  }));
-  if (chart) chart.destroy();
-  chart = new Chart(ctx, {
-    type: 'radar',
-    data: { labels, datasets },
-    options: {
-      responsive: true,
-      scales: { r: { min:0, max:10, ticks:{stepSize:2,font:{size:11}}, pointLabels:{font:{size:12,weight:'600'}}, grid:{color:'#e5e7eb'}, angleLines:{color:'#e5e7eb'} } },
-      plugins: { legend: { position:'bottom', labels:{font:{size:12}} } }
-    }
-  });
-}
+        // 触摸交互
+        const touchArea = document.getElementById('touchArea');
+        let pressTimer;
+        let isPressing = false;
+        const PRESS_DURATION = 3000;
 
-function updateCompare() {
-  const sec = document.getElementById('compareSection');
-  if (jobs.length < 2) { sec.style.display = 'none'; return; }
-  sec.style.display = 'block';
-  const totals = jobs.map(j => calcTotal(j));
-  const bestDim = DIMS.map((_, di) => {
-    let mx = -1, mi = 0;
-    jobs.forEach((j, ji) => { if (j.scores[di] > mx) { mx = j.scores[di]; mi = ji; } });
-    return mi;
-  });
-  const bestTotal = totals.indexOf(Math.max(...totals));
+        function startPress(e) {
+            e.preventDefault();
+            if (isPressing) return;
+            isPressing = true;
+            touchArea.classList.add('pressing');
+            pressTimer = setTimeout(() => {
+                showAnswer();
+                endPress();
+            }, PRESS_DURATION);
+        }
 
-  let html = '<table class="compare-table"><thead><tr><th>维度</th>';
-  jobs.forEach(j => { html += `<th class="job-col">${escHtml(j.name)}</th>`; });
-  html += '</tr></thead><tbody>';
-  DIMS.forEach((d, di) => {
-    html += `<tr><td>${d.icon} ${d.label}</td>`;
-    jobs.forEach((j, ji) => {
-      const sel = j.selected[di];
-      const lbl = sel >= 0 ? d.options[sel].label : '未选';
-      html += `<td class="${ji === bestDim[di] ? 'best' : ''}">${lbl}</td>`;
-    });
-    html += '</tr>';
-  });
-  html += '<tr style="border-top:2px solid #ddd;font-size:15px"><td><b>总分</b></td>';
-  jobs.forEach((j, ji) => {
-    const t = totals[ji]; const lv = getLevel(t);
-    html += `<td class="${ji === bestTotal ? 'best' : ''}" style="color:${lv.color}"><b>${t.toFixed(1)}</b></td>`;
-  });
-  html += '</tr><tr><td><b>评价</b></td>';
-  jobs.forEach(j => {
-    const lv = getLevel(calcTotal(j));
-    html += `<td><span class="level-badge ${lv.cls}" style="font-size:11px;padding:3px 10px">${lv.badge}</span></td>`;
-  });
-  html += '</tr></tbody></table>';
-  document.getElementById('compareTable').innerHTML = html;
-}
+        function endPress() {
+            isPressing = false;
+            touchArea.classList.remove('pressing');
+            clearTimeout(pressTimer);
+        }
 
-function renderAll() { renderTabs(); renderCards(); renderResults(); updateCompare(); updateChart(); }
+        touchArea.addEventListener('mousedown', startPress);
+        touchArea.addEventListener('mouseup', endPress);
+        touchArea.addEventListener('mouseleave', endPress);
+        touchArea.addEventListener('touchstart', startPress);
+        touchArea.addEventListener('touchend', endPress);
+        touchArea.addEventListener('touchcancel', endPress);
 
-function escHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+        function showAnswer() {
+            const randomAnswer = answers[Math.floor(Math.random() * answers.length)];
+            document.getElementById('answerIcon').textContent = randomAnswer.icon;
+            document.getElementById('answerText').textContent = randomAnswer.text;
+            document.getElementById('answerMeaning').textContent = randomAnswer.meaning;
+            document.getElementById('answerDisplay').classList.add('show');
+        }
 
-addJob();
-</script>
+        function closeAnswer() {
+            document.getElementById('answerDisplay').classList.remove('show');
+            document.getElementById('question').value = '';
+        }
+
+        document.addEventListener('touchmove', function(e) {
+            if (isPressing) e.preventDefault();
+        }, { passive: false });
+    </script>
 </body>
 </html>
